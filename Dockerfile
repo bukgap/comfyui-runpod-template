@@ -20,6 +20,9 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
+# --- INSTALL JUPYTERLAB ---
+RUN pip install jupyterlab
+
 # --- INSTALL VS CODE SERVER ---
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 
@@ -27,8 +30,9 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh
 RUN curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 
 # --- UPGRADE TORCH TO STABLE 2.6.0 ---
+# --- UPGRADE TORCH (User Requested Generic Install) ---
 RUN pip install --upgrade pip wheel setuptools
-RUN pip install torch==2.6.0+cu126 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+RUN pip install torch torchvision
 
 # Clone ComfyUI
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git

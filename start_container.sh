@@ -25,20 +25,28 @@ mkdir -p "$WORKSPACE_DIR/logs"
 
 # --- 2. START SERVICES ---
 
+# CRITICAL: CD to a safe directory to avoid "getcwd() failed" errors if the original CWD was moved
+cd "$WORKSPACE_DIR"
+
 # A. SSH
 service ssh start
 
-# B. JupyterLab (Fixed 403 Errors)
+# B. JupyterLab
 echo "Starting JupyterLab..."
-jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password='' --ServerApp.allow_origin='*' --ServerApp.allow_remote_access=True --ServerApp.disable_check_xsrf=True &
+jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password='' --ServerApp.allow_origin='*' --ServerApp.allow_remote_access=True --ServerApp.disable_check_xsrf=True > "$WORKSPACE_DIR/logs/jupyter.log" 2>&1 &
 
 # C. VS Code Server (Port 3000)
 echo "Starting VS Code Server..."
-code-server --bind-addr 0.0.0.0:3000 --auth none --user-data-dir "$WORKSPACE_DIR/.vscode" --extensions-dir "$WORKSPACE_DIR/.vscode/extensions" "$WORKSPACE_DIR" &
+code-server --bind-addr 0.0.0.0:3000 --auth none --user-data-dir "$WORKSPACE_DIR/.vscode" --extensions-dir "$WORKSPACE_DIR/.vscode/extensions" "$WORKSPACE_DIR" > "$WORKSPACE_DIR/logs/code-server.log" 2>&1 &
 
 # D. FileBrowser (Port 4000)
 echo "Starting FileBrowser..."
-filebrowser -r "$WORKSPACE_DIR" -p 4000 -a 0.0.0.0 --no-auth &
+# Initialize DB if missing
+if [ ! -f "$WORKSPACE_DIR/filebrowser.db" ]; then
+    filebrowser config init -d "$WORKSPACE_DIR/filebrowser.db"
+    filebrowser config set --auth.method=noauth -d "$WORKSPACE_DIR/filebrowser.db"
+fi
+filebrowser -d "$WORKSPACE_DIR/filebrowser.db" -p 4000 -r "$WORKSPACE_DIR" -a 0.0.0.0 > "$WORKSPACE_DIR/logs/filebrowser.log" 2>&1 &
 
 # E. ComfyUI (Port 8188)
 echo "Starting ComfyUI..."
