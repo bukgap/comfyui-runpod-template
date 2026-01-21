@@ -41,14 +41,27 @@ code-server --bind-addr 0.0.0.0:3000 --auth none --user-data-dir "$WORKSPACE_DIR
 
 # D. FileBrowser (Port 4000)
 echo "Starting FileBrowser..."
-# Initialize DB if missing
-if [ ! -f "$WORKSPACE_DIR/filebrowser.db" ]; then
-    filebrowser config init -d "$WORKSPACE_DIR/filebrowser.db"
-fi
 
-# FORCE Apply Release Settings (Fixes "500 Error" / Login Loop on restarts)
-filebrowser config set --auth.method=noauth -d "$WORKSPACE_DIR/filebrowser.db"
+# Generate a random 8-character password
+FB_PASSWORD=$(date +%s | sha256sum | base64 | head -c 8)
 
+# Reset Database to ensure clean auth state
+rm -f "$WORKSPACE_DIR/filebrowser.db"
+filebrowser config init -d "$WORKSPACE_DIR/filebrowser.db"
+
+# Create admin user with random password
+filebrowser users add admin "$FB_PASSWORD" --perm.admin -d "$WORKSPACE_DIR/filebrowser.db"
+
+# Log Credentials Visibly
+echo "================================================================"
+echo "   FILEBROWSER CREDENTIALS"
+echo "   Username: admin"
+echo "   Password: $FB_PASSWORD"
+echo "================================================================"
+# Save to file for easy retrieval
+echo "admin:$FB_PASSWORD" > "$WORKSPACE_DIR/filebrowser_credentials.txt"
+
+# Start Service
 filebrowser -d "$WORKSPACE_DIR/filebrowser.db" -p 4000 -r "$WORKSPACE_DIR" -a 0.0.0.0 > "$WORKSPACE_DIR/logs/filebrowser.log" 2>&1 &
 
 # E. ComfyUI (Port 8188)
