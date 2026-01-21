@@ -33,6 +33,11 @@ RUN pip install torch==2.6.0+cu126 torchvision torchaudio --index-url https://do
 # Clone ComfyUI
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git
 
+# --- COPY CUSTOM WORKFLOWS ---
+# Create the directory structure and copy workflows
+RUN mkdir -p /app/ComfyUI/user/default/workflows
+COPY workflows /app/ComfyUI/user/default/workflows/
+
 # --- INSTALL EXTRAS ---
 # SageAttention (Compiles from source)
 RUN pip install sageattention --no-build-isolation

@@ -1,0 +1,966 @@
+{
+  "id": "a9c83f01-d03d-499d-8e3d-c6b6b5cab75c",
+  "revision": 0,
+  "last_node_id": 22,
+  "last_link_id": 23,
+  "nodes": [
+    {
+      "id": 4,
+      "type": "CLIPTextEncode",
+      "pos": [
+        510,
+        170
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "title": "CLIP Text Encode (NegativePrompt)",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.36",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "\"bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards\""
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 8,
+      "type": "TrimVideoLatent",
+      "pos": [
+        1180,
+        120
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 11
+        },
+        {
+          "name": "trim_amount",
+          "type": "INT",
+          "widget": {
+            "name": "trim_amount"
+          },
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.36",
+        "Node name for S&R": "TrimVideoLatent"
+      },
+      "widgets_values": [
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "type": "MarkdownNote",
+      "pos": [
+        -400,
+        -40
+      ],
+      "size": [
+        450,
+        860
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Jubied - Note - Settings",
+      "properties": {},
+      "widgets_values": [
+        "# 🎥 Recommended Settings\n\n## ✅ Recommended Width and Height  \n\n### **480p**  \n- **Landscape** → `832x480px`  \n- **Portrait** → `480x832px`  \n- **Square** → `640x640px`  \n\n### **720p**  \n- **Landscape** → `1280x720px`  \n- **Portrait** → `720x1280px`  \n- **Square** → `960x960px`  \n\n---  \n\n## ✅ Recommended Length (Frames)  \n\n### **For 16 FPS:**  \n**Duration → Length Value (in the WanVaceToVideo Node)** \n- **1 second** → `17 frames`  \n- **2 seconds** → `33 frames`  \n- **3 seconds** → `49 frames`  \n- **4 seconds** → `65 frames`  \n- **5 seconds** → `81 frames`  \n\n### **For 24 FPS:**  \n**Duration → Length Value (in the WanVaceToVideo Node)**  \n- **1 second** → `25`  \n- **2 seconds** → `49`  \n- **3 seconds** → `73`  \n- **4 seconds** → `97`  \n- **5 seconds** → `121`  \n\n⚡ **16 FPS is generated faster than 24 FPS, but 24 FPS gives smoother motion.**  \n\n---  \n\n## ✅ Formula to Calculate Length  \n*(Remember to add an extra frame!)*  \n📌 **Formula:**  \n`Frames = (Seconds × FPS) + 1`  \n\n*(Check `FPS` in the **Create Video Node**)  \n\n### **Example Calculations:**  \n📌 **For 3 seconds at 24 FPS:**  \n`(3 × 24) + 1 = 73 frames`  \n\n📌 **For 3 seconds at 16 FPS:**  \n`(3 × 16) + 1 = 49 frames`  \n\n---  \n \n\n## ✅ Recommended Frame Rate \n- **16 FPS** → ⏩ Faster generation, but less smooth motion  \n- **24 FPS** → 🕰️ Slower generation, but smoother video  \n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 1,
+      "type": "UnetLoaderGGUF",
+      "pos": [
+        70,
+        -40
+      ],
+      "size": [
+        340,
+        58
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-gguf",
+        "ver": "a2b75978fd50c0227a58316619b79d525b88e570",
+        "Node name for S&R": "UnetLoaderGGUF"
+      },
+      "widgets_values": [
+        "Wan2.1_14B_VACE-Q4_K_M.gguf"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "pos": [
+        70,
+        60
+      ],
+      "size": [
+        340,
+        106
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            3,
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.36",
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        "wan",
+        "default"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "VAEDecode",
+      "pos": [
+        1190,
+        130
+      ],
+      "size": [
+        140,
+        50
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 13
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 14
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            23
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.36",
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "ModelSamplingSD3",
+      "pos": [
+        420,
+        -140
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.36",
+        "Node name for S&R": "ModelSamplingSD3"
+      },
+      "widgets_values": [
+        8.000000000000002
+      ]
+    },
+    {
+      "id": 3,
+      "type": "CLIPTextEncode",
+      "pos": [
+        420,
+        -40
+      ],
+      "size": [
+        400,
+        310
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "title": "CLIP Text Encode (Positive Prompt)",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.36",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A stunning steampunk girl with long wavy purple hair and glowing green eyes, wearing brass goggles and intricate gear-themed accessories, looking at the camera with a slight smile, elegant steampunk outfit with leather straps and lace, warm vintage interior setting, soft cinematic lighting"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 12,
+      "type": "VAELoader",
+      "pos": [
+        70,
+        210
+      ],
+      "size": [
+        340,
+        60
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            7,
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.36",
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "wan_2.1_vae.safetensors"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "KSampler",
+      "pos": [
+        1110,
+        -40
+      ],
+      "size": [
+        270,
+        310
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 8
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 9
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.36",
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        524881955641219,
+        "randomize",
+        20,
+        4,
+        "uni_pc",
+        "simple",
+        1
+      ]
+    },
+    {
+      "id": 22,
+      "type": "VHS_VideoCombine",
+      "pos": [
+        1390,
+        -40
+      ],
+      "size": [
+        347.4019470214844,
+        334
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 23
+        },
+        {
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "name": "meta_batch",
+          "shape": 7,
+          "type": "VHS_BatchManager",
+          "link": null
+        },
+        {
+          "name": "vae",
+          "shape": 7,
+          "type": "VAE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Filenames",
+          "type": "VHS_FILENAMES",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-videohelpersuite",
+        "ver": "4c7858ddd5126f7293dc3c9f6e0fc4c263cde079",
+        "Node name for S&R": "VHS_VideoCombine"
+      },
+      "widgets_values": {
+        "frame_rate": 16,
+        "loop_count": 0,
+        "filename_prefix": "WanVideo",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 19,
+        "save_metadata": true,
+        "trim_to_audio": false,
+        "pingpong": false,
+        "save_output": true,
+        "videopreview": {
+          "hidden": false,
+          "paused": false,
+          "params": {
+            "filename": "WanVideo_00007.mp4",
+            "subfolder": "",
+            "type": "output",
+            "format": "video/h264-mp4",
+            "frame_rate": 16,
+            "workflow": "WanVideo_00007.png",
+            "fullpath": "/teamspace/studios/this_studio/ComfyUI/output/WanVideo_00007.mp4"
+          },
+          "muted": false
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "WanVaceToVideo",
+      "pos": [
+        830,
+        -40
+      ],
+      "size": [
+        270,
+        310
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 5
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 6
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 7
+        },
+        {
+          "name": "control_video",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 22
+        },
+        {
+          "name": "control_masks",
+          "shape": 7,
+          "type": "MASK",
+          "link": null
+        },
+        {
+          "name": "reference_image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            8
+          ]
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "links": [
+            9
+          ]
+        },
+        {
+          "name": "latent",
+          "type": "LATENT",
+          "links": [
+            10
+          ]
+        },
+        {
+          "name": "trim_latent",
+          "type": "INT",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.36",
+        "Node name for S&R": "WanVaceToVideo"
+      },
+      "widgets_values": [
+        640,
+        640,
+        49,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 18,
+      "type": "GetVideoComponents",
+      "pos": [
+        770,
+        320
+      ],
+      "size": [
+        193.530859375,
+        80
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            20
+          ]
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": null
+        },
+        {
+          "name": "fps",
+          "type": "FLOAT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.36",
+        "Node name for S&R": "GetVideoComponents"
+      },
+      "widgets_values": [],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 20,
+      "type": "AIO_Preprocessor",
+      "pos": [
+        970,
+        320
+      ],
+      "size": [
+        260,
+        82
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            21,
+            22
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui_controlnet_aux",
+        "ver": "83463c2e4b04e729268e57f638b4212e0da4badc",
+        "Node name for S&R": "AIO_Preprocessor"
+      },
+      "widgets_values": [
+        "CannyEdgePreprocessor",
+        640
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 21,
+      "type": "PreviewImage",
+      "pos": [
+        1240,
+        320
+      ],
+      "size": [
+        140,
+        250
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 21
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.36",
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": [],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 17,
+      "type": "LoadVideo",
+      "pos": [
+        420,
+        320
+      ],
+      "size": [
+        340,
+        450
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [
+            18
+          ]
+        }
+      ],
+      "title": "Load Control Video",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.36",
+        "Node name for S&R": "LoadVideo"
+      },
+      "widgets_values": [
+        "Video_Reference.mp4",
+        "image"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 16,
+      "type": "LoadImage",
+      "pos": [
+        70,
+        320
+      ],
+      "size": [
+        340,
+        370
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            17
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.36",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "pasted/image (1).png",
+        "image"
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      6,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      6,
+      0,
+      7,
+      0,
+      "MODEL"
+    ],
+    [
+      3,
+      2,
+      0,
+      3,
+      0,
+      "CLIP"
+    ],
+    [
+      4,
+      2,
+      0,
+      4,
+      0,
+      "CLIP"
+    ],
+    [
+      5,
+      3,
+      0,
+      5,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      6,
+      4,
+      0,
+      5,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      7,
+      12,
+      0,
+      5,
+      2,
+      "VAE"
+    ],
+    [
+      8,
+      5,
+      0,
+      7,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      9,
+      5,
+      1,
+      7,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      10,
+      5,
+      2,
+      7,
+      3,
+      "LATENT"
+    ],
+    [
+      11,
+      7,
+      0,
+      8,
+      0,
+      "LATENT"
+    ],
+    [
+      12,
+      5,
+      3,
+      8,
+      1,
+      "INT"
+    ],
+    [
+      13,
+      8,
+      0,
+      9,
+      0,
+      "LATENT"
+    ],
+    [
+      14,
+      12,
+      0,
+      9,
+      1,
+      "VAE"
+    ],
+    [
+      17,
+      16,
+      0,
+      5,
+      5,
+      "IMAGE"
+    ],
+    [
+      18,
+      17,
+      0,
+      18,
+      0,
+      "VIDEO"
+    ],
+    [
+      20,
+      18,
+      0,
+      20,
+      0,
+      "IMAGE"
+    ],
+    [
+      21,
+      20,
+      0,
+      21,
+      0,
+      "IMAGE"
+    ],
+    [
+      22,
+      20,
+      0,
+      5,
+      3,
+      "IMAGE"
+    ],
+    [
+      23,
+      9,
+      0,
+      22,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.6934334949441359,
+      "offset": [
+        676.5110549341646,
+        285.69905218757117
+      ]
+    },
+    "frontendVersion": "1.36.14",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true,
+    "workflowRendererVersion": "LG"
+  },
+  "version": 0.4
+}
