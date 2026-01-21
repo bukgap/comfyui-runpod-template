@@ -11,20 +11,26 @@ WORKDIR /app
 
 # Install system dependencies
 # libgl1-mesa-glx: Required for OpenCV (used by ComfyUI)
-# git, wget: For downloading code and models
+# ninja-build, build-essential: Required for compiling custom nodes (SageAttention, FlashAttn)
 RUN apt-get update && apt-get install -y \
     git \
     wget \
     libgl1-mesa-glx \
     libglib2.0-0 \
+    ninja-build \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Clone ComfyUI
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git
 
 # --- INSTALL EXTRAS (SageAttention & Nunchaku) ---
+# Upgrade pip to ensure wheel building works
+RUN pip install --upgrade pip wheel setuptools
+
 # SageAttention (Compiles from source, may take time)
-RUN pip install sageattention==2.2.0 --no-build-isolation
+# We remove the version pin to get the latest compatible version
+RUN pip install sageattention --no-build-isolation
 
 # --- INSTALL CUSTOM NODES (Tavris1 / Pixaroma Pack) ---
 WORKDIR /app/ComfyUI/custom_nodes
