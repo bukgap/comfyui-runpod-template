@@ -1,6 +1,5 @@
 # Use the official RunPod PyTorch image as the base.
-# It includes Python 3.11, CUDA 12.4.1, and PyTorch 2.4.0.
-# (Note: PyTorch 2.8.0 is not yet available on RunPod registry, 2.4.0 satisfies requirements)
+# We will upgrade Torch inside this image to match your specific version.
 FROM runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04
 
 # Set environment variables
@@ -10,8 +9,6 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Install system dependencies
-# libgl1-mesa-glx: Required for OpenCV (used by ComfyUI)
-# ninja-build, build-essential: Required for compiling custom nodes (SageAttention, FlashAttn)
 RUN apt-get update && apt-get install -y \
     git \
     wget \
@@ -24,12 +21,13 @@ RUN apt-get update && apt-get install -y \
 # Clone ComfyUI
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git
 
-# --- INSTALL EXTRAS (SageAttention & Nunchaku) ---
-# Upgrade pip to ensure wheel building works
+# --- UPGRADE TORCH TO SPECIFIC VERSION ---
+# We install the exact version requested: 2.7.1+cu128
 RUN pip install --upgrade pip wheel setuptools
+RUN pip install torch==2.7.1+cu128 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
 
+# --- INSTALL EXTRAS (SageAttention & Nunchaku) ---
 # SageAttention (Compiles from source, may take time)
-# We remove the version pin to get the latest compatible version
 RUN pip install sageattention --no-build-isolation
 
 # --- INSTALL CUSTOM NODES (Tavris1 / Pixaroma Pack) ---
