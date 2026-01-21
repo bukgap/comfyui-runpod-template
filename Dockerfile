@@ -32,7 +32,7 @@ RUN curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh |
 # --- UPGRADE TORCH TO STABLE 2.6.0 ---
 # --- UPGRADE TORCH (User Requested v2.8.0) ---
 RUN pip install --upgrade pip wheel setuptools
-RUN pip install torch==2.8.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+RUN pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu126
 
 # Clone ComfyUI
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git
