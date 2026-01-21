@@ -44,8 +44,11 @@ echo "Starting FileBrowser..."
 # Initialize DB if missing
 if [ ! -f "$WORKSPACE_DIR/filebrowser.db" ]; then
     filebrowser config init -d "$WORKSPACE_DIR/filebrowser.db"
-    filebrowser config set --auth.method=noauth -d "$WORKSPACE_DIR/filebrowser.db"
 fi
+
+# FORCE Apply Release Settings (Fixes "500 Error" / Login Loop on restarts)
+filebrowser config set --auth.method=noauth -d "$WORKSPACE_DIR/filebrowser.db"
+
 filebrowser -d "$WORKSPACE_DIR/filebrowser.db" -p 4000 -r "$WORKSPACE_DIR" -a 0.0.0.0 > "$WORKSPACE_DIR/logs/filebrowser.log" 2>&1 &
 
 # E. ComfyUI (Port 8188)
