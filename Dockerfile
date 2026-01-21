@@ -21,10 +21,10 @@ RUN apt-get update && apt-get install -y \
 # Clone ComfyUI
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git
 
-# --- UPGRADE TORCH TO SPECIFIC VERSION ---
-# We install the exact version requested: 2.7.1+cu128
-RUN pip install --upgrade pip wheel setuptools
-RUN pip install torch==2.7.1+cu128 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+# --- UPGRADE TORCH TO NIGHTLY (2.7+) ---
+# Stable 2.7.1+cu128 not found. Switching to Nightly builds.
+# We try CUDA 12.6 which is commonly supported in nightlies.
+RUN pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu126
 
 # --- INSTALL EXTRAS (SageAttention & Nunchaku) ---
 # SageAttention (Compiles from source, may take time)
