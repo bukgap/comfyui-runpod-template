@@ -1,19 +1,46 @@
 #!/bin/bash
 
-# 1. Start SSH Service
-# RunPod base images typically have SSH configured, but we ensure the service is running.
+# --- 1. SETUP PERSISTENT WORKSPACE ---
+echo "Checking workspace..."
+
+# Define paths
+WORKSPACE_DIR="/workspace"
+COMFY_APP_DIR="/app/ComfyUI"
+COMFY_WORK_DIR="$WORKSPACE_DIR/ComfyUI"
+
+# If ComfyUI is not in the persistent volume, move it there
+if [ ! -d "$COMFY_WORK_DIR" ]; then
+    echo "First run detected. Moving ComfyUI to persistent volume..."
+    mv "$COMFY_APP_DIR" "$WORKSPACE_DIR/"
+else
+    echo "Persistent ComfyUI found. Linking..."
+    rm -rf "$COMFY_APP_DIR" # Remove the app copy to save space/confusion
+fi
+
+# Create a symlink so /app/ComfyUI always points to the workspace version
+ln -s "$COMFY_WORK_DIR" "$COMFY_APP_DIR"
+
+# Ensure other directories exist
+mkdir -p "$WORKSPACE_DIR/logs"
+
+# --- 2. START SERVICES ---
+
+# A. SSH
 service ssh start
 
-# 2. Start JupyterLab (Background)
-# We run this in the background so it doesn't block the script.
-# --allow-root: Required to run as root.
-# --NotebookApp.token='': Disables token authentication (be careful with this in production, but standard for RunPod dev mode).
-jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password='' &
-echo "JupyterLab started on port 8888"
+# B. JupyterLab (Fixed 403 Errors)
+echo "Starting JupyterLab..."
+jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password='' --ServerApp.allow_origin='*' --ServerApp.allow_remote_access=True --ServerApp.disable_check_xsrf=True &
 
-# 3. Start ComfyUI (Foreground)
-# We run this in the foreground to keep the container active.
-# --listen 0.0.0.0: Required to access the UI from your browser via RunPod proxy.
+# C. VS Code Server (Port 3000)
+echo "Starting VS Code Server..."
+code-server --bind-addr 0.0.0.0:3000 --auth none --user-data-dir "$WORKSPACE_DIR/.vscode" --extensions-dir "$WORKSPACE_DIR/.vscode/extensions" "$WORKSPACE_DIR" &
+
+# D. FileBrowser (Port 4000)
+echo "Starting FileBrowser..."
+filebrowser -r "$WORKSPACE_DIR" -p 4000 -a 0.0.0.0 --no-auth &
+
+# E. ComfyUI (Port 8188)
 echo "Starting ComfyUI..."
-cd /app/ComfyUI
+cd "$COMFY_WORK_DIR"
 python main.py --listen 0.0.0.0 --port 8188

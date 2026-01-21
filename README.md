@@ -3,23 +3,35 @@
 This project contains the Docker configuration to build a custom RunPod template for ComfyUI. It is based on the popular "Tavris1/ComfyUI-Easy-Install" (Pixaroma Community Edition) pack, adapted for a cloud server environment.
 
 ## Features
-- **Base:** RunPod PyTorch 2.8.0 (CUDA 12.8.1, Python 3.11)
-- **ComfyUI:** Latest version pre-installed.
-- **New High-Performance Extras:**
-  - **SageAttention:** Extremely fast attention mechanism (v2.2.0).
-  - **Nunchaku:** Efficient 4-bit inference engine for neural networks.
+- **Base:** RunPod PyTorch 2.4 (Upgraded to **PyTorch 2.6.0 Stable**)
+- **Persistence:** ComfyUI is automatically moved to `/workspace/ComfyUI` so your changes are saved.
+- **Development Tools:**
+  - **VS Code Server:** Full IDE in browser (Port 3000)
+  - **FileBrowser:** Easy file management (Port 4000)
+  - **JupyterLab:** Fixed & Ready (Port 8888)
+- **High-Performance Extras:**
+  - **SageAttention:** Extremely fast attention mechanism.
 - **Pre-installed Nodes:**
-  - ComfyUI Manager (for easy installation of other nodes)
+  - ComfyUI Manager
   - ComfyUI-Easy-Use
   - Comfyroll Studio
   - rgthree-comfy
   - ComfyUI-GGUF
   - ComfyUI-Inpaint-CropAndStitch
-  - ComfyUI-nunchaku
-- **Tools:**
-  - JupyterLab (Port 8888)
-  - SSH (Port 22)
-  - Auto-start script for seamless deployment.
+
+## Configure RunPod
+Create a "New Template" on RunPod with these settings:
+
+- **Image Name:** `jubied1/comfyui-tavris:stable`
+- **Container Disk:** `30 GB` (Minimum)
+- **Volume Disk:** `50 GB` (Recommended)
+- **Volume Mount Path:** `/workspace`
+- **Expose Ports:**
+  - `8188` (ComfyUI)
+  - `8888` (JupyterLab)
+  - `3000` (VS Code Server)
+  - `4000` (FileBrowser)
+  - `22` (SSH)
 
 ## Build & Deploy Guide
 

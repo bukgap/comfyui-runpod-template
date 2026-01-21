@@ -1,41 +1,44 @@
 # Use the official RunPod PyTorch image as the base.
-# We will upgrade Torch inside this image to match your specific version.
 FROM runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
+ENV NUNCHAKU_SKIP_CUDA_BUILD=1 
+# ^ (Optional optimization if Nunchaku supports it, otherwise ignored)
 
 # Set the working directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies & Tools
 RUN apt-get update && apt-get install -y \
     git \
     wget \
+    curl \
     libgl1-mesa-glx \
     libglib2.0-0 \
     ninja-build \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
+# --- INSTALL VS CODE SERVER ---
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+
+# --- INSTALL FILEBROWSER ---
+RUN curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
+
+# --- UPGRADE TORCH TO STABLE 2.6.0 ---
+RUN pip install --upgrade pip wheel setuptools
+RUN pip install torch==2.6.0+cu126 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+
 # Clone ComfyUI
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git
 
-# --- UPGRADE TORCH TO NIGHTLY (2.7+) ---
-# Stable 2.7.1+cu128 not found. Switching to Nightly builds.
-# We try CUDA 12.6 which is commonly supported in nightlies.
-RUN pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu126
-
-# --- INSTALL EXTRAS (SageAttention & Nunchaku) ---
-# SageAttention (Compiles from source, may take time)
+# --- INSTALL EXTRAS ---
+# SageAttention (Compiles from source)
 RUN pip install sageattention --no-build-isolation
 
-# --- INSTALL CUSTOM NODES (Tavris1 / Pixaroma Pack) ---
+# --- INSTALL CUSTOM NODES (Clean List) ---
 WORKDIR /app/ComfyUI/custom_nodes
-
-# Fix for potential git clone errors (timeouts/auth)
-RUN git config --global http.postBuffer 524288000 && \
-    git config --global http.sslVerify true
 
 # 1. ComfyUI Manager
 RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git
@@ -55,9 +58,6 @@ RUN git clone https://github.com/City96/ComfyUI-GGUF.git
 # 6. ComfyUI-Inpaint-CropAndStitch
 RUN git clone https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch.git
 
-# 7. ComfyUI-nunchaku
-RUN git clone https://github.com/nunchaku-ai/ComfyUI-nunchaku.git
-
 
 # --- INSTALL PYTHON DEPENDENCIES FOR NODES ---
 WORKDIR /app/ComfyUI
@@ -66,7 +66,6 @@ WORKDIR /app/ComfyUI
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Install requirements for all custom nodes
-# We loop through them to ensure all dependencies are met
 RUN for dir in custom_nodes/*; do \
     if [ -f "$dir/requirements.txt" ]; then \
         echo "Installing requirements for $dir..."; \
@@ -81,8 +80,10 @@ RUN chmod +x /start_container.sh
 # Expose ports:
 # 8188: ComfyUI
 # 8888: JupyterLab
+# 3000: VS Code Server
+# 4000: FileBrowser
 # 22: SSH
-EXPOSE 8188 8888 22
+EXPOSE 8188 8888 3000 4000 22
 
 # Set the command to run our start script
 CMD ["/start_container.sh"]
