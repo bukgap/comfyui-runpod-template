@@ -50,7 +50,11 @@ rm -f "$WORKSPACE_DIR/filebrowser.db"
 filebrowser config init -d "$WORKSPACE_DIR/filebrowser.db"
 
 # Create admin user with random password
-filebrowser users add admin "$FB_PASSWORD" --perm.admin -d "$WORKSPACE_DIR/filebrowser.db"
+# Update admin user if it exists (default from init), otherwise add it.
+# We suppress stdout/stderr for the check to keep logs clean, but if it fails we run add.
+if ! filebrowser users update admin --password "$FB_PASSWORD" --perm.admin -d "$WORKSPACE_DIR/filebrowser.db" > /dev/null 2>&1; then
+    filebrowser users add admin "$FB_PASSWORD" --perm.admin -d "$WORKSPACE_DIR/filebrowser.db"
+fi
 
 # Log Credentials Visibly
 echo "================================================================"
