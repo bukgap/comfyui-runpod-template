@@ -67,6 +67,9 @@ RUN git clone https://github.com/City96/ComfyUI-GGUF.git
 # 6. ComfyUI-Inpaint-CropAndStitch
 RUN git clone https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch.git
 
+# 7. ComfyUI-Crystools
+RUN git clone https://github.com/crystian/ComfyUI-Crystools.git
+
 
 # --- INSTALL PYTHON DEPENDENCIES FOR NODES ---
 WORKDIR /app/ComfyUI
