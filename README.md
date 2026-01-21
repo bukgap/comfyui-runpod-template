@@ -22,7 +22,7 @@ This project contains the Docker configuration to build a custom RunPod template
 ## Configure RunPod
 Create a "New Template" on RunPod with these settings:
 
-- **Image Name:** `jemon97/comfyui-tavris:stable`
+- **Image Name:** `jubied1/comfyui-tavris:stable`
 - **Container Disk:** `30 GB` (Minimum)
 - **Volume Disk:** `50 GB` (Recommended)
 - **Volume Mount Path:** `/workspace`
@@ -42,20 +42,20 @@ Create a "New Template" on RunPod with these settings:
 ### 2. Build the Image
 Navigate to this directory in PowerShell/Terminal and run:
 ```bash
-# Replace 'jemon97' with your Docker Hub username if different
-docker build -t jemon97/comfyui-tavris:v1 .
+# Replace 'jubied1' with your Docker Hub username if different
+docker build -t jubied1/comfyui-tavris:v1 .
 ```
 
 ### 3. Push to Docker Hub
 Upload the image so RunPod can access it:
 ```bash
-docker push jemon97/comfyui-tavris:v1
+docker push jubied1/comfyui-tavris:v1
 ```
 
 ### 4. Configure RunPod
 Create a "New Template" on RunPod with these settings:
 
-- **Image Name:** `jemon97/comfyui-tavris:stable` (or :v1)
+- **Image Name:** `jubied1/comfyui-tavris:stable` (or :v1)
 - **Container Disk:** `30 GB` (Minimum)
 - **Volume Disk:** `50 GB` (Recommended for storing models)
 - **Expose Ports:**
