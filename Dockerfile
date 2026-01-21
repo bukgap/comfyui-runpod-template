@@ -1,6 +1,7 @@
 # Use the official RunPod PyTorch image as the base.
-# It includes Python 3.11, CUDA 12.8.1, and PyTorch 2.8.0.
-FROM runpod/pytorch:2.8.0-py3.11-cuda12.8.1-cudnn-devel-ubuntu
+# It includes Python 3.11, CUDA 12.4.1, and PyTorch 2.4.0.
+# (Note: PyTorch 2.8.0 is not yet available on RunPod registry, 2.4.0 satisfies requirements)
+FROM runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
