@@ -3,7 +3,7 @@
 This project contains the Docker configuration to build a custom RunPod template for ComfyUI. It is based on the popular "Tavris1/ComfyUI-Easy-Install" (Pixaroma Community Edition) pack, adapted for a cloud server environment.
 
 ## Features
-- **Base:** RunPod PyTorch 2.4 (Upgraded to **PyTorch 2.6.0 Stable**)
+- **Base:** RunPod PyTorch 2.4 (Upgraded to **PyTorch 2.8.0 Stable** + CUDA 12.6)
 - **Persistence:** ComfyUI is automatically moved to `/workspace/ComfyUI` so your changes are saved.
 - **Development Tools:**
   - **VS Code Server:** Full IDE in browser (Port 3000)
@@ -18,6 +18,7 @@ This project contains the Docker configuration to build a custom RunPod template
   - rgthree-comfy
   - ComfyUI-GGUF
   - ComfyUI-Inpaint-CropAndStitch
+  - ComfyUI-Crystools
 
 ## Configure RunPod
 Create a "New Template" on RunPod with these settings:
