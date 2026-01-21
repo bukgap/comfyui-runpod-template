@@ -45,25 +45,19 @@ echo "Starting FileBrowser..."
 # Generate a random 8-character password
 FB_PASSWORD=$(date +%s | sha256sum | base64 | head -c 8)
 
-# Reset Database to ensure clean auth state
+# FileBrowser Configuration - FORCE NOAUTH
+# We delete the database on every boot to ensure 'noauth' configuration works reliably
+# and isn't overridden by previous states. The file system remains untouched.
 rm -f "$WORKSPACE_DIR/filebrowser.db"
 filebrowser config init -d "$WORKSPACE_DIR/filebrowser.db"
+filebrowser config set --auth.method=noauth -d "$WORKSPACE_DIR/filebrowser.db"
 
-# Create admin user with random password
-# Update admin user if it exists (default from init), otherwise add it.
-# We suppress stdout/stderr for the check to keep logs clean, but if it fails we run add.
-if ! filebrowser users update admin --password "$FB_PASSWORD" --perm.admin -d "$WORKSPACE_DIR/filebrowser.db" > /dev/null 2>&1; then
-    filebrowser users add admin "$FB_PASSWORD" --perm.admin -d "$WORKSPACE_DIR/filebrowser.db"
-fi
+# Create admin user (just in case, though noauth should bypass)
+filebrowser users add admin admin --perm.admin -d "$WORKSPACE_DIR/filebrowser.db"
 
-# Log Credentials Visibly
 echo "================================================================"
-echo "   FILEBROWSER CREDENTIALS"
-echo "   Username: admin"
-echo "   Password: $FB_PASSWORD"
+echo "   FILEBROWSER: NO AUTHENTICATION REQUIRED"
 echo "================================================================"
-# Save to file for easy retrieval
-echo "admin:$FB_PASSWORD" > "$WORKSPACE_DIR/filebrowser_credentials.txt"
 
 # Start Service
 filebrowser -d "$WORKSPACE_DIR/filebrowser.db" -p 4000 -r "$WORKSPACE_DIR" -a 0.0.0.0 > "$WORKSPACE_DIR/logs/filebrowser.log" 2>&1 &
