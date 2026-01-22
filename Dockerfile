@@ -23,6 +23,9 @@ RUN apt-get update && apt-get install -y \
 # --- INSTALL JUPYTERLAB ---
 RUN pip install jupyterlab
 
+# --- INSTALL VS CODE SERVER ---
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+
 
 
 # --- UPGRADE TORCH TO STABLE 2.6.0 ---
