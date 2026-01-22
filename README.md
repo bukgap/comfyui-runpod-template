@@ -1,6 +1,6 @@
-# ComfyUI RunPod Template (Tavris/Pixaroma Edition)
+# ComfyUI RunPod Template
 
-This project contains the Docker configuration to build a custom RunPod template for ComfyUI. It is based on the popular "Tavris1/ComfyUI-Easy-Install" (Pixaroma Community Edition) pack, adapted for a cloud server environment.
+This project contains the Docker configuration to build a custom RunPod template for ComfyUI. It is adapted for a cloud server environment.
 
 ## Features
 - **Base:** RunPod PyTorch 2.4 (Upgraded to **PyTorch 2.8.0 Stable** + CUDA 12.6)
