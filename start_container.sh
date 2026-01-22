@@ -39,28 +39,9 @@ jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.tok
 echo "Starting VS Code Server..."
 code-server --bind-addr 0.0.0.0:3000 --auth none --user-data-dir "$WORKSPACE_DIR/.vscode" --extensions-dir "$WORKSPACE_DIR/.vscode/extensions" "$WORKSPACE_DIR" > "$WORKSPACE_DIR/logs/code-server.log" 2>&1 &
 
-# D. FileBrowser (Port 4000)
-echo "Starting FileBrowser..."
-
-# Generate a random 8-character password
-FB_PASSWORD=$(date +%s | sha256sum | base64 | head -c 8)
-
-# FileBrowser Configuration - FORCE NOAUTH
-# We delete the database on every boot to ensure 'noauth' configuration works reliably
-# and isn't overridden by previous states. The file system remains untouched.
-rm -f "$WORKSPACE_DIR/filebrowser.db"
-filebrowser config init -d "$WORKSPACE_DIR/filebrowser.db"
-filebrowser config set --auth.method=noauth -d "$WORKSPACE_DIR/filebrowser.db"
-
-# Create admin user (just in case, though noauth should bypass)
-filebrowser users add admin admin --perm.admin -d "$WORKSPACE_DIR/filebrowser.db"
-
-echo "================================================================"
-echo "   FILEBROWSER: NO AUTHENTICATION REQUIRED"
-echo "================================================================"
-
-# Start Service
-filebrowser -d "$WORKSPACE_DIR/filebrowser.db" -p 4000 -r "$WORKSPACE_DIR" -a 0.0.0.0 > "$WORKSPACE_DIR/logs/filebrowser.log" 2>&1 &
+# D. Dufs (Port 4000)
+echo "Starting Dufs..."
+dufs "$WORKSPACE_DIR" -A -p 4000 --bind 0.0.0.0 > "$WORKSPACE_DIR/logs/dufs.log" 2>&1 &
 
 # E. ComfyUI (Port 8188)
 echo "Starting ComfyUI..."
