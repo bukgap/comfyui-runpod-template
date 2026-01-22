@@ -23,8 +23,7 @@ RUN apt-get update && apt-get install -y \
 # --- INSTALL JUPYTERLAB ---
 RUN pip install jupyterlab
 
-# --- INSTALL FILEBROWSER ---
-RUN curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
+
 
 # --- UPGRADE TORCH TO STABLE 2.6.0 ---
 # --- UPGRADE TORCH (User Requested v2.8.0) ---
@@ -92,7 +91,7 @@ RUN chmod +x /start_container.sh
 # 3000: VS Code Server
 # 4000: FileBrowser
 # 22: SSH
-EXPOSE 8188 8888 3000 4000 22
+EXPOSE 8188 8888 3000 22
 
 # Set the command to run our start script
 CMD ["/start_container.sh"]

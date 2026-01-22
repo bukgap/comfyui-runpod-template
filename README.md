@@ -7,7 +7,6 @@ This project contains the Docker configuration to build a custom RunPod template
 - **Persistence:** ComfyUI is automatically moved to `/workspace/ComfyUI` so your changes are saved.
 - **Development Tools:**
   - **VS Code Server:** Full IDE in browser (Port 3000)
-  - **FileBrowser:** Easy file management (Port 4000)
   - **JupyterLab:** Fixed & Ready (Port 8888)
 - **High-Performance Extras:**
   - **SageAttention:** Extremely fast attention mechanism.
@@ -31,7 +30,7 @@ Create a "New Template" on RunPod with these settings:
   - `8188` (ComfyUI)
   - `8888` (JupyterLab)
   - `3000` (VS Code Server)
-  - `4000` (FileBrowser)
+
   - `22` (SSH)
 
 ## Build & Deploy Guide
