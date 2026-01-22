@@ -23,14 +23,8 @@ RUN apt-get update && apt-get install -y \
 # --- INSTALL JUPYTERLAB ---
 RUN pip install jupyterlab
 
-# --- INSTALL VS CODE SERVER ---
-RUN curl -fsSL https://code-server.dev/install.sh | sh
-
-# --- INSTALL DUFS (Lightweight File Manager) ---
-RUN curl -L https://github.com/sigoden/dufs/releases/download/v0.45.0/dufs-v0.45.0-x86_64-unknown-linux-musl.tar.gz -o dufs.tar.gz && \
-    tar -xvf dufs.tar.gz && \
-    mv dufs /usr/local/bin/ && \
-    rm dufs.tar.gz
+# --- INSTALL FILEBROWSER ---
+RUN curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 
 # --- UPGRADE TORCH TO STABLE 2.6.0 ---
 # --- UPGRADE TORCH (User Requested v2.8.0) ---
